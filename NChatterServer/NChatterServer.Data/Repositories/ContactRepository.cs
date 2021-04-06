@@ -1,0 +1,33 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using NChatterServer.Data.Models;
+using System.Linq;
+
+namespace NChatterServer.Data.Repositories
+{
+    public class ContactRepository : Repository<Contact>
+    {
+        public ContactRepository(NChatterServerContext context) : base(context) {}
+        
+        public async Task<IEnumerable<Message>> GetMessagesByContactIdAndTimeAsync(int id, DateTime time1, DateTime time2)
+        {
+            Contact c = await GetByIdAsync(id);
+            return from m in c.Messages
+                where time1 < m.SentTime & m.SentTime <= time2
+                select m;
+        }
+        
+        public async Task<Message> GetLastMessageByContactAsync(int id)
+        {
+            Contact c = await GetByIdAsync(id);
+            return c.Messages.OrderByDescending(m => m.SentTime).First();
+        }
+
+        private NChatterServerContext NChatterServerContext
+        {
+            get { return Context as NChatterServerContext; }
+        }
+    }
+}
