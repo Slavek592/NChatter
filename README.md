@@ -1,3 +1,3 @@
 # NChatter
 
-This is an NChatter application made by Viacheslav Nikiforov. At that moment it is being preparing.
+This is an NChatter chatting application made by Viacheslav Nikiforov.
